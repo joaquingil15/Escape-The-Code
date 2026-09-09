@@ -1,5 +1,8 @@
 import random
 
+# Letras que identifican cada columna del tablero (índice 0 a 4)
+COLUMNAS = ["A", "B", "C", "D", "E"]
+
 
 # ---------- TABLERO ----------
 
@@ -15,10 +18,15 @@ def crear_tablero():
 
 
 def mostrar_tablero(tablero):
-    """Muestra el tablero visible para el jugador."""
-    print("\n  0 1 2 3 4")
+    """Muestra el tablero visible para el jugador, con columnas A-E y filas 1-5."""
+    print("\n  ", end="")
+    for letra in COLUMNAS:
+        print(letra, end=" ")
+    print()
+
     for i in range(5):
-        print(i, end=" ")
+        numero_fila = i + 1
+        print(numero_fila, end=" ")
         for j in range(5):
             print(tablero[i][j], end=" ")
         print()
@@ -52,20 +60,32 @@ def generar_barcos(cantidad=3):
 
 # ---------- ENTRADA Y VALIDACIÓN ----------
 
-def pedir_numero(mensaje):
+def pedir_columna(mensaje):
     """
-    Pide un número por teclado. Si el usuario ingresa algo que no es
-    un número, devuelve None en lugar de romper el programa.
+    Pide una letra de columna (A a E). Si no es una letra válida,
+    devuelve None en lugar de romper el programa.
+    """
+    entrada = input(mensaje).strip().upper()
+    if entrada in COLUMNAS:
+        return COLUMNAS.index(entrada)
+    else:
+        return None
+
+
+def pedir_fila(mensaje):
+    """
+    Pide un número de fila (1 a 5). Si no es un número válido dentro
+    del rango, devuelve None en lugar de romper el programa.
     """
     entrada = input(mensaje).strip()
     if not entrada.isdigit():
         return None
-    return int(entrada)
 
+    numero = int(entrada)
+    if numero < 1 or numero > 5:
+        return None
 
-def coordenada_en_rango(fila, columna):
-    """Verifica que fila y columna estén dentro del tablero (0 a 4)."""
-    return 0 <= fila <= 4 and 0 <= columna <= 4
+    return numero - 1
 
 
 def posicion_ya_atacada(tablero, fila, columna):
@@ -108,10 +128,12 @@ def mostrar_estado(hundidos, total_barcos, disparos):
 
 
 def formatear_barcos(barcos):
-    """Devuelve las coordenadas de los barcos en formato legible."""
+    """Devuelve las coordenadas de los barcos en formato letra+número, ej: A1."""
     textos = []
     for barco in barcos:
-        texto = "(" + str(barco[0]) + "," + str(barco[1]) + ")"
+        letra_columna = COLUMNAS[barco[1]]
+        numero_fila = barco[0] + 1
+        texto = letra_columna + str(numero_fila)
         textos.append(texto)
     return ", ".join(textos)
 
@@ -130,15 +152,14 @@ def mini_batalla_naval():
         mostrar_tablero(tablero)
         print("\nDisparos restantes:", disparos)
 
-        fila = pedir_numero("Fila (0-4): ")
-        columna = pedir_numero("Columna (0-4): ")
-
-        if fila is None or columna is None:
-            print("Debe ingresar un número.")
+        columna = pedir_columna("Columna (A-E): ")
+        if columna is None:
+            print("Columna inválida. Debe ser una letra entre A y E.")
             continue
 
-        if not coordenada_en_rango(fila, columna):
-            print("Coordenadas fuera de rango.")
+        fila = pedir_fila("Fila (1-5): ")
+        if fila is None:
+            print("Fila inválida. Debe ser un número entre 1 y 5.")
             continue
 
         if posicion_ya_atacada(tablero, fila, columna):
