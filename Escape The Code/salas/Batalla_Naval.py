@@ -183,5 +183,3 @@ def mini_batalla_naval():
         print("Los barcos estaban en:", formatear_barcos(barcos))
         return False
 
-if __name__ == "__main__":
-    mini_batalla_naval()

@@ -1,5 +1,6 @@
-from salas.Ahorcado import jugar_ahorcado, palabras
+from salas.Ahorcado import jugar_ahorcado
 from salas.Batalla_Naval import mini_batalla_naval
+import re
 
 print("Bienvenido a Scape The Code")
 
@@ -20,11 +21,11 @@ def menu():
     if input_usuario.isdigit():
         input_usuario = int(input_usuario)
         if input_usuario == 0:
-            print("\nBienvenido a Scape The Code. En este juego, deberás superar dos salas para ganar. La primera sala es un juego de Ahorcado, donde tendrás que adivinar la palabra correcta antes de quedarte sin intentos. La segunda sala es un juego de Batalla Naval, donde deberás hundir todos los barcos enemigos antes de quedarte sin disparos. ¡Buena suerte!")
+            print("\nBienvenido a Scape The Code. En este juego, deberás superar dos salas para ganar. La primera sala es un juego de Ahorcado, donde tendrás que adivinar la palabra correcta antes de quedarte sin intentos. La segunda sala es un juego de Batalla Naval, donde deberás hundir todos los barcos enemigos antes de quedarte sin disparos. ¡Buena suerte!".center(80))
             print("\n")
             menu()
         elif input_usuario == 1:
-            sala_1=jugar_ahorcado()
+            sala_1=mini_batalla_naval()
             if sala_1==True:
                 sala_2=mini_batalla_naval()
         elif input_usuario == 2:
