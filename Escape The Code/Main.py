@@ -12,6 +12,44 @@ def encriptado(contra):
         resultado += chr(n_cod)
     return resultado
 
+def requisitos(nueva_contra, contra1):
+    """Valida la nueva contraseña.
+    Parametros:
+    nueva_contra: str, la nueva contraseña a validar.
+    contra1: str, la contraseña actual encriptada.
+    Retorna:
+    bool: True si la nueva contraseña es valida, False si no.
+    """
+    if len(nueva_contra) < 8:
+        print("Error - debe tener al menos 8 caracteres.")
+        return False
+
+    if re.search(r"\s", nueva_contra):
+        print("Error - no puede contener espacios.")
+        return False
+
+    if not re.search(r"[A-Z]", nueva_contra):
+        print("Error - debe contener al menos una letra mayúscula.")
+        return False
+
+    if not re.search(r"[a-z]", nueva_contra):
+        print("Error - debe contener al menos una letra minúscula.")
+        return False
+
+    if not re.search(r"\d", nueva_contra):
+        print("Error - debe contener al menos un número.")
+        return False
+
+    if not re.search(r"[^A-Za-z0-9\s]", nueva_contra):
+        print("Error - debe contener al menos un carácter especial.")
+        return False
+
+    if encriptado(nueva_contra) == contra1:
+        print("Error - debe ser diferente de la contraseña actual.")
+        return False
+
+    return True
+
 def menu():
     print("0. Instrucciones")
     print("1. Jugar")
@@ -30,6 +68,7 @@ def menu():
                 sala_2=mini_batalla_naval()
         elif input_usuario == 2:
             cambiar_contraseña(contra1)
+            menu()
         elif input_usuario == 3:
             print("Cerrando sesión...")
             login(us1, contra1)
@@ -43,14 +82,17 @@ def menu():
 def cambiar_contraseña(contra1):
     log_pasword = input("Ingrese su contraseña actual: ")
     log_pasword = encriptado(log_pasword)
-    if log_pasword == contra1:
-        nueva_contra = input("Ingrese su nueva contraseña: ")
-        nueva_contra = encriptado(nueva_contra)
-        print("Contraseña cambiada exitosamente")
-        menu()
-    else:
+
+    if log_pasword != contra1:
         print("Error - Contraseña incorrecta")
-        menu()
+        return contra1
+
+    while True:
+        nueva_contra = input("Ingrese su nueva contraseña: ")
+        if requisitos(nueva_contra, contra1):
+            print("Contraseña cambiada exitosamente")
+            return encriptado(nueva_contra)
+    
 
     
 
