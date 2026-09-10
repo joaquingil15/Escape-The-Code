@@ -63,7 +63,7 @@ def menu():
             print("\n")
             menu()
         elif input_usuario == 1:
-            sala_1=mini_batalla_naval()
+            sala_1=jugar_ahorcado()
             if sala_1==True:
                 sala_2=mini_batalla_naval()
         elif input_usuario == 2:
